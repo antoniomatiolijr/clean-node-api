@@ -8,14 +8,14 @@ import {
 } from './db-authentication-protocols'
 
 export class DbAuthentication implements Authentication {
-  constructor(
+  constructor (
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
     private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) {}
 
-  async auth(authentication: AuthenticationModel): Promise<string> {
+  async auth (authentication: AuthenticationModel): Promise<string> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
       authentication.email
     )
