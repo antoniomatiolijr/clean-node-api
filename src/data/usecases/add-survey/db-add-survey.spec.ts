@@ -6,15 +6,30 @@ const makeFakeSurvey = (): AddSurveyModel => ({
   answers: [{ image: 'any_image', answer: 'any_answer' }]
 })
 
+const makeAddSurveRepository = (): AddSurveyRepository => {
+  class AddSurveyRepositoryStub implements AddSurveyRepository {
+    async add (data: AddSurveyModel): Promise<void> {
+      return await new Promise((resolve) => resolve())
+    }
+  }
+  return new AddSurveyRepositoryStub()
+}
+interface SutTypes {
+  sut: DbAddSurvey
+  addSurveyRepositoryStub: AddSurveyRepository
+}
+
+const makeSut = (): SutTypes => {
+  const addSurveyRepositoryStub = makeAddSurveRepository()
+  const sut = new DbAddSurvey(addSurveyRepositoryStub)
+
+  return { sut, addSurveyRepositoryStub }
+}
+
 describe('DbAddSurvey Usecase', () => {
   test('Should call AddSurveyRepository with correct values', async () => {
-    class AddSurveyRepositoryStub implements AddSurveyRepository {
-      async add (data: AddSurveyModel): Promise<void> {
-        return await new Promise((resolve) => resolve())
-      }
-    }
-    const addSurveyRepositoryStub = new AddSurveyRepositoryStub()
-    const sut = new DbAddSurvey(addSurveyRepositoryStub)
+    const { sut, addSurveyRepositoryStub } = makeSut()
+
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add')
     const surveyData = makeFakeSurvey()
     await sut.add(surveyData)
