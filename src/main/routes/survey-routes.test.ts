@@ -9,6 +9,30 @@ import env from '../config/env'
 let surveyCollection: Collection
 let accountCollection: Collection
 
+const makeAccessToken = async (): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    name: 'Matioli',
+    email: 'matioli@gmail.com',
+    password: '123',
+    role: 'admin'
+  })
+
+  const id = res.ops[0]._id
+  const accessToken = sign({ id }, env.jwtSecret)
+
+  await accountCollection.updateOne(
+    {
+      _id: id
+    },
+    {
+      $set: {
+        accessToken
+      }
+    }
+  )
+  return accessToken
+}
+
 describe('Survey Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -40,26 +64,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 with valid token', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'Matioli',
-        email: 'matioli@gmail.com',
-        password: '123',
-        role: 'admin'
-      })
-
-      const id = res.ops[0]._id
-      const accessToken = sign({ id }, env.jwtSecret)
-
-      await accountCollection.updateOne(
-        {
-          _id: id
-        },
-        {
-          $set: {
-            accessToken
-          }
-        }
-      )
+      const accessToken = await makeAccessToken()
 
       await request(app)
         .post('/api/surveys')
@@ -81,27 +86,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 200 on load surveys with valid accessToken', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'Matioli',
-        email: 'matioli@gmail.com',
-        password: '123',
-        role: 'admin'
-      })
-
-      const id = res.ops[0]._id
-      const accessToken = sign({ id }, env.jwtSecret)
-
-      await accountCollection.updateOne(
-        {
-          _id: id
-        },
-        {
-          $set: {
-            accessToken
-          }
-        }
-      )
-
+      const accessToken = await makeAccessToken()
       await surveyCollection.insertMany([
         {
           question: 'other_question',
