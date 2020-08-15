@@ -13,7 +13,7 @@ import {
 } from './login-controller-protocols'
 import { AuthenticationModel } from '@/domain/usecases/authentication'
 
-interface SutTypes {
+type SutTypes = {
   sut: LoginController
   authenticationStub: Authentication
   validationStub: Validation
