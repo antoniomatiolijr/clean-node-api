@@ -11,14 +11,14 @@ import {
   MissingParamError,
   ServerError,
   EmailInUseError
-} from '../../../errors'
-import { HttpRequest } from '../../../protocols'
+} from '@/presentation/errors'
+import { HttpRequest } from '@/presentation/protocols'
 import {
   ok,
   serverError,
   badRequest,
   forbidden
-} from '../../../helpers/http/http-helper'
+} from '@/presentation/helpers/http/http-helper'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {

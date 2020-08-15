@@ -5,7 +5,7 @@ import {
   AccountModel,
   LoadAccountByEmailRepository
 } from './db-add-account-protocols'
-import { AddAccountRepository } from '../../protocols/db/account/add-account-repository'
+import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
 
 export class DbAddAccount implements AddAccount {
   constructor (
