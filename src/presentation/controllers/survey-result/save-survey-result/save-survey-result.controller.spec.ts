@@ -6,7 +6,10 @@ import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
 
 const makeFakeRequest = (): HttpRequest => ({
-  params: { surveyId: 'any_survey_id' }
+  params: { surveyId: 'any_survey_id' },
+  body: {
+    answer: 'any_answer'
+  }
 })
 
 const makeFakeSurvey = (): SurveyModel => ({
@@ -68,5 +71,16 @@ describe('SaveSurveyResult Controller', () => {
       )
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 403 if an invalid answer is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({
+      params: { surveyId: 'any_survey_id' },
+      body: {
+        answer: 'invalid_answer'
+      }
+    })
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('answer')))
   })
 })
