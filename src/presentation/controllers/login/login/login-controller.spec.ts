@@ -11,7 +11,7 @@ import {
   Authentication,
   Validation
 } from './login-controller-protocols'
-import { AuthenticationModel } from '@/domain/usecases/authentication'
+import { AuthenticationModel } from '@/domain/usecases/account/authentication'
 
 type SutTypes = {
   sut: LoginController
