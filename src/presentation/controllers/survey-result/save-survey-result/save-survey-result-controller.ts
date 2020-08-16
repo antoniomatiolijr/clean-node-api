@@ -1,20 +1,22 @@
 import { Controller, HttpResponse, HttpRequest } from '@/presentation/protocols'
-import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helpers/http/http-helper'
+import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
+import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
 
 export class SaveSurveyResultController implements Controller {
-  constructor (
-    private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
-  ) {}
+  constructor (private readonly loadSurveyById: LoadSurveyById) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const survey = await this.loadSurveyByIdRepository.loadById(
-      httpRequest.params.surveyId
-    )
-    if (!survey) {
-      return forbidden(new InvalidParamError('surveyId'))
+    try {
+      const survey = await this.loadSurveyById.loadById(
+        httpRequest.params.surveyId
+      )
+      if (!survey) {
+        return forbidden(new InvalidParamError('surveyId'))
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    return null
   }
 }
