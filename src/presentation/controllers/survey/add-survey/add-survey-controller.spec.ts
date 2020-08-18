@@ -3,7 +3,7 @@ import {
   HttpRequest,
   Validation,
   AddSurvey,
-  AddSurveyModel
+  AddSurveyParams
 } from './add-survey-controller-protocols'
 import {
   badRequest,
@@ -27,7 +27,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add (input: AddSurveyModel): Promise<void> {
+    async add (input: AddSurveyParams): Promise<void> {
       return await new Promise((resolve) => resolve())
     }
   }

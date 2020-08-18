@@ -10,7 +10,7 @@ import {
 } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
 import {
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
   SaveSurveyResult
 } from '@/domain/usecases/survey-result/save-survey-result'
 import { SurveyResultModel } from '@/domain/models/survey-result'
@@ -53,7 +53,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 }
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return await new Promise((resolve) => resolve(makeFakeSurveyResult()))
     }
   }
