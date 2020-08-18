@@ -1,10 +1,10 @@
-import request from 'supertest'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
+import request from 'supertest'
 
-let accoutCollection: Collection
+let accountCollection: Collection
 
 describe('Login Routes', () => {
   beforeAll(async () => {
@@ -16,38 +16,46 @@ describe('Login Routes', () => {
   })
 
   beforeEach(async () => {
-    accoutCollection = await MongoHelper.getCollection('accounts')
-    await accoutCollection.deleteMany({})
+    accountCollection = await MongoHelper.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
 
-  describe('POST/signup', () => {
+  describe('POST /signup', () => {
     test('Should return 200 on signup', async () => {
       await request(app)
         .post('/api/signup')
         .send({
-          name: 'Matioli',
-          email: 'matioli@gmail.com',
-          password: 'matioli',
-          passwordConfirmation: 'matioli'
+          name: 'Rodrigo',
+          email: 'rodrigo.manguinho@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
         })
         .expect(200)
+      await request(app)
+        .post('/api/signup')
+        .send({
+          name: 'Rodrigo',
+          email: 'rodrigo.manguinho@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
+        })
+        .expect(403)
     })
   })
 
   describe('POST /login', () => {
     test('Should return 200 on login', async () => {
-      const password = await hash('matioli', 12)
-      await accoutCollection.insertOne({
-        name: 'Matioli',
-        email: 'matioli@gmail.com',
+      const password = await hash('123', 12)
+      await accountCollection.insertOne({
+        name: 'Rodrigo',
+        email: 'rodrigo.manguinho@gmail.com',
         password
       })
-
       await request(app)
         .post('/api/login')
         .send({
-          email: 'matioli@gmail.com',
-          password: 'matioli'
+          email: 'rodrigo.manguinho@gmail.com',
+          password: '123'
         })
         .expect(200)
     })
@@ -56,8 +64,8 @@ describe('Login Routes', () => {
       await request(app)
         .post('/api/login')
         .send({
-          email: 'matioli@gmail.com',
-          password: 'matioli'
+          email: 'rodrigo.manguinho@gmail.com',
+          password: '123'
         })
         .expect(401)
     })

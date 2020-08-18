@@ -1,6 +1,6 @@
 {
   "name": "clean-node-api",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,9 +17,6 @@
     "test:ci": "npm test -- --coverage",
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.1",
     "@types/bcrypt": "^3.0.0",

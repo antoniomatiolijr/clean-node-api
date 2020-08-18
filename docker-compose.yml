@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mongo:
     container_name: mongo-container
@@ -7,7 +7,7 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - '27017:27017'
+      - "27017:27017"
   api:
     container_name: api-container
     image: node:12
@@ -20,7 +20,7 @@ services:
       - ./dist/:/usr/src/clean-node-api/dist/
       - ./package.json:/usr/src/clean-node-api/package.json
     ports:
-      - '5050:5050'
-      - '9222:9222'
+      - "5050:5050"
+      - "9222:9222"
     links:
       - mongo
