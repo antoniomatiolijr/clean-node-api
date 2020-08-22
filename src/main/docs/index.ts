@@ -1,6 +1,6 @@
 import { loginPath } from './paths/login-path'
-import { accountSchema } from './schemas/account-schema'
-import { loginParamsSchema } from './schemas/login-params-schema'
+import { accountSchema, loginParamsSchema, errorSchema } from './schemas'
+import { badRequest, notFound, serverError, unauthorized } from './components'
 
 export default {
   openapi: '3.0.0',
@@ -8,6 +8,10 @@ export default {
     title: 'Clean Node APi',
     description: 'API para realizar enquetes',
     version: '1.0.0'
+  },
+  license: {
+    name: 'GPL-3.0-or-later',
+    url: 'https://opensource.org/licenses/gpl-3.0.html'
   },
   servers: [
     {
@@ -24,6 +28,13 @@ export default {
   },
   schemas: {
     account: accountSchema,
-    loginParams: loginParamsSchema
+    loginParams: loginParamsSchema,
+    error: errorSchema
+  },
+  components: {
+    badRequest,
+    serverError,
+    unauthorized,
+    notFound
   }
 }
