@@ -2,9 +2,13 @@ import { LoadSurveyResultController } from './load-survey-result-controller'
 import { HttpRequest } from '@/presentation/protocols'
 import { mockLoadSurveyById, mockLoadSurveyResult } from '@/presentation/test'
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
-import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
+import {
+  forbidden,
+  serverError,
+  ok
+} from '@/presentation/helpers/http/http-helper'
 import { InvalidParamError } from '@/presentation/errors'
-import { throwError } from '@/domain/test'
+import { throwError, mockSurveyResultModel } from '@/domain/test'
 import { LoadSurveyResult } from '@/domain/usecases/survey-result/load-survey-result'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -74,5 +78,11 @@ describe('LoadSurveyResult Controller', () => {
 
     await sut.handle(makeFakeRequest())
     expect(loadSpyOn).toHaveBeenCalledWith('any_id')
+  })
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(mockSurveyResultModel()))
   })
 })
